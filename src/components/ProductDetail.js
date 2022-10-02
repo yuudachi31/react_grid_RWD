@@ -1,28 +1,20 @@
-import { useState } from "react";
-import { Row, Col } from "antd";
-import { Select } from 'antd';
+import { Row, Col, Select } from "antd";
 import AddToCart from "./AddToCart"
 
 const { Option } = Select;
 
+
 function ProductDetail({ product }) {
-   const [qty, setQty] = useState(product.countInStock > 0 ? 1 : 0);
-   const[spec,setSpec]=useState(product.specification[0])
-console.log(product.specification)
    return (
       <Row gutter={[32, 32]}>
-        <Col 
-          lg={{ span: 8, offset: 2 }}
-        >
+        <Col xs={{ span: 20, offset: 2}} lg={{ span: 6, offset: 2}}>
          <img
-            alt=""
+            alt={product.name}
             className="product-image"
             src={product.image}
          />           
         </Col>
-        <Col 
-          lg={{ span: 12 }}
-        >
+        <Col xs={{ span: 20, offset: 2}} lg={{ span: 14, offset: 0}} >
          <div className="product-info--detail">
             <h2 className="product-category">
                {product.category}
@@ -35,51 +27,22 @@ console.log(product.specification)
                <p className="product-price product-price--large">
                   US${product.price}.00
                </p>
-               <div className="qty_all">
-                  <div className="qty_left">
                <p className="product-status">
                   Status: {product.countInStock > 0 ? "In Stock" : "Unavailable."}
                </p>
                <p className="product-qty">
                   Qty: {"   "}
                   <Select 
-                     defaultValue={qty} 
+                     defaultValue={product.countInStock > 0 ? 1 : 0} 
                      className="select-style"
-                     onChange={val=>setQty(val)}
                   >
-                      {[...Array(product.countInStock).keys()].map((x) => (
+                     {[...Array(product.countInStock).keys()].map((x) => (
                         <Option key={x + 1} value={x + 1}>
                            {x + 1}
                         </Option>
-                     ))} 
-                  
+                     ))}
                   </Select>
-                 
                </p>
-               
-               <p className="product-qty">
-                  Total Price: {product.price * qty}
-               </p>   
-               </div>  
-               <div className="qty_right">
-               <p className="product-qty">
-               specification:{"   "}
-               <Select 
-                     defaultValue={product.specification[0]} 
-                     className="select-style"
-                     onChange={val=>setSpec(val)}
-                  >
-                  {
-                       product.specification.map((x) => (
-                        <Option  value={x }>
-                           {x }
-                        </Option>
-                       ))
-                     }
-                     </Select>
-               </p> 
-                  </div> 
-               </div>         
                <AddToCart />
             </div>
          </div>           
